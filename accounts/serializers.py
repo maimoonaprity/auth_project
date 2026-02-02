@@ -9,7 +9,7 @@ from datetime import timedelta
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
-    access_duration = serializers.IntegerField(required=True, help_text="Access duration in hours")
+    access_duration = serializers.FloatField(required=True, help_text="Access duration in hours")
     class Meta:
         model = User
         fields = ['username', 'email', 'password', 'password2', 'access_duration']
@@ -17,7 +17,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"message" : "password does not match"})
-        return attrs
+        
         
         if attrs['access_duration'] <= 0:
             raise serializers.ValidationError({"access_duration": "time limit over"})
