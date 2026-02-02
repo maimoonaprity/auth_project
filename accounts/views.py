@@ -4,8 +4,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import User
-from .serializers import RegisterSerializer, ProfileSerializer, UserListSerializer
-
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import RegisterSerializer, ProfileSerializer, UserListSerializer, MyTokenObtainPairSerializer
+from .permissions import IsAccessValid
 
 
 
@@ -28,14 +29,15 @@ class RegisterUser(APIView):
             return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
         
 class ProfileView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAccessValid]
 
     def get(self, request):
         user = request.user
         serializer = ProfileSerializer(user)
         return Response(serializer.data)
 
-
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
         
 
 
