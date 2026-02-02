@@ -5,7 +5,7 @@ from datetime import timedelta
 
 class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
-    access_duration = models.DurationField(default=timedelta(hours=24))
+    access_duration = models.DurationField(default=timedelta(seconds=24))
     is_valid = models.BooleanField(default=True)
 
     def check_validity(self):

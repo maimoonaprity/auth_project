@@ -25,7 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         validated_data.pop('password2')
-        access_hours = validated_data.pop('access_duration')
+        access_seconds = validated_data.pop('access_duration')
         
         user = User.objects.create(
             username = validated_data['username'],
@@ -33,7 +33,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
         user.set_password(validated_data['password'])
-        user.access_duration = timedelta(hours=access_hours)
+        user.access_duration = timedelta(seconds=access_seconds)
         user.save()
         return user
         
